@@ -1,11 +1,11 @@
 package com.weilyu.photoapp.photoappusersservice.ui.controllers;
 
 
+import com.weilyu.photoapp.photoappusersservice.ui.model.CreateUserRequestModel;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -23,7 +23,7 @@ public class UsersController {
     }
 
     @PostMapping
-    public String createUser() {
+    public String createUser(@Valid @RequestBody CreateUserRequestModel userDetails) {   // convert JSON payload into CreateUserRequestModel object
         return "createUser method is called.";
     }
 
