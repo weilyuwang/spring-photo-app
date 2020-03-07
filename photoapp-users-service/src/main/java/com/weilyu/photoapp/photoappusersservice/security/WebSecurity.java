@@ -20,6 +20,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        // only accept requests from Zuul gateway IP address, which is defined in application.properties (could also define it in config server)
         http.authorizeRequests().antMatchers("/**").hasIpAddress(environment.getProperty("gateway.ip"));
         http.headers().frameOptions().disable();
     }
