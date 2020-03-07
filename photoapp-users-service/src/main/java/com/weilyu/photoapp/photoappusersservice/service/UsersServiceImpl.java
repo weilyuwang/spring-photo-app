@@ -27,17 +27,14 @@ public class UsersServiceImpl implements UsersService{
 
         // set an unique user ID (UUID)
         userDetails.setUserId(UUID.randomUUID().toString());
+        // encrypt user password before save user into database
+        userDetails.setEncryptedPassword(passwordEncoder.encode(userDetails.getPassword()));
 
         // user ModelMapper to map DTO into JPA Entity ( field variable names in DTO and Entity must match (be the same) )
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         UserEntity userEntity = modelMapper.map(userDetails, UserEntity.class);
-
-        // encrypt user password before persistence into database
-        // for now, hard code it. TODO encrypt user password
-        userEntity.setEncryptedPassword("test_encrypt_pass");
-
         // save entity into database using repository
         userRepository.save(userEntity);
 
