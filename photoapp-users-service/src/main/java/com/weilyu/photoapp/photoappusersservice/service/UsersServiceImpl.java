@@ -6,6 +6,7 @@ import com.weilyu.photoapp.photoappusersservice.data.UserRepository;
 import com.weilyu.photoapp.photoappusersservice.shared.UserDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,9 +15,11 @@ import java.util.UUID;
 public class UsersServiceImpl implements UsersService{
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;   // to get encoder injected into UsersServiceImpl, need to create a bean of this encoder
 
-    public UsersServiceImpl(UserRepository userRepository) {
+    public UsersServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
