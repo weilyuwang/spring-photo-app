@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weilyu.photoapp.photoappusersservice.service.UsersService;
 import com.weilyu.photoapp.photoappusersservice.shared.UserDto;
 import com.weilyu.photoapp.photoappusersservice.ui.model.LoginRequestModel;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -60,7 +64,21 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
+        // get the username (user email) from the authResult
         String username = ((User) authResult.getPrincipal()).getUsername(); // the username is actually the user-provided email address
+        // from username, find the user detail (we will use the public user id to generate json web token for the login user)
         UserDto userDetails = usersService.getUserDetailsByEmail(username);
+
+        // generate a JWT token for the login user
+        String token = Jwts.builder()
+                .setSubject(userDetails.getUserId())
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(environment.getProperty("token.expiration_time"))))
+                .signWith(SignatureAlgorithm.RS256, environment.getProperty("token.secret")) // RS256: recommended signature algorithm
+                .compact();
+
+        // add JWT token to response http header
+        response.addHeader("token", token);
+        // add public user id to response http header
+        response.addHeader("userId", userDetails.getUserId());
     }
 }
