@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -44,6 +45,14 @@ public class UsersServiceImpl implements UsersService{
 
         // return the saved userDto
         return modelMapper.map(userEntity, UserDto.class);
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username);
+        if(userEntity == null) throw new UsernameNotFoundException(username);
+
+        return new ModelMapper().map(userEntity, UserDto.class);
     }
 
     @Override

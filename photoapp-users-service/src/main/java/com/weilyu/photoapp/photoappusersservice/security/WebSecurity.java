@@ -35,13 +35,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
-        authenticationFilter.setAuthenticationManager(authenticationManager());
-        return authenticationFilter;
+        return new AuthenticationFilter(usersService, environment, authenticationManager());
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // provide the password encoder to let AuthenticationManager authenticate login user
         auth.userDetailsService(usersService).passwordEncoder(bCryptPasswordEncoder);
     }
 }
