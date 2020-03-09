@@ -73,7 +73,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String token = Jwts.builder()
                 .setSubject(userDetails.getUserId())
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(environment.getProperty("token.expiration_time"))))
-                .signWith(SignatureAlgorithm.RS256, environment.getProperty("token.secret")) // RS256: recommended signature algorithm
+                .signWith(SignatureAlgorithm.HS512, environment.getProperty("token.secret"))  //Base64-encoded key bytes may only be specified for HMAC signatures
                 .compact();
 
         // add JWT token to response http header
