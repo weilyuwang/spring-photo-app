@@ -1,11 +1,11 @@
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
-#!**/src/main/**
+!**/src/main/**
 !**/src/test/**
 
 ### Secret (application.properties) ###
-/src/main/resources/application.properties
+#/src/main/resources/application.properties
 
 
 ### STS ###
