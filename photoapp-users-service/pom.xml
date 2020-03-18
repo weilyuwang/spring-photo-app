@@ -42,6 +42,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+
         <!-- Need Spring Boot Starter Data JPA dependency to access h2 console -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
