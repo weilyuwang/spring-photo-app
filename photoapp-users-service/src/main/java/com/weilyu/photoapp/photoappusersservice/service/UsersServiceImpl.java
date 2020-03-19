@@ -110,6 +110,7 @@ public class UsersServiceImpl implements UsersService{
          */
 
         // get rid of try-catch block and use FeignErrorDecoder instead
+        logger.info("Before calling Albums Microservice");
         List<AlbumResponseModel> albumsList = albumsServiceClient.getAlbums(userId);
 
         userDto.setAlbums(albumsList);
