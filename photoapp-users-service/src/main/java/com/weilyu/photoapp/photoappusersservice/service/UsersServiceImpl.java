@@ -95,6 +95,8 @@ public class UsersServiceImpl implements UsersService{
 
         */
 
+
+        /*
         //use Feign Client to send HTTP get request to albums-service to get user's albums data:
         List<AlbumResponseModel> albumsList = null;
 
@@ -104,6 +106,11 @@ public class UsersServiceImpl implements UsersService{
             // handle Feign Exception
             logger.error(e.getLocalizedMessage());
         }
+
+         */
+
+        // get rid of try-catch block and use FeignErrorDecoder instead
+        List<AlbumResponseModel> albumsList = albumsServiceClient.getAlbums(userId);
 
         userDto.setAlbums(albumsList);
 
