@@ -4,15 +4,22 @@ package com.weilyu.photoapp.photoappusersservice.service;
 import com.weilyu.photoapp.photoappusersservice.data.UserEntity;
 import com.weilyu.photoapp.photoappusersservice.data.UserRepository;
 import com.weilyu.photoapp.photoappusersservice.shared.UserDto;
+import com.weilyu.photoapp.photoappusersservice.ui.model.AlbumResponseModel;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,10 +27,14 @@ public class UsersServiceImpl implements UsersService{
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;   // to get encoder injected into UsersServiceImpl, need to create a bean of this encoder
+    private final RestTemplate restTemplate;
+    private final Environment environment;
 
-    public UsersServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UsersServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, RestTemplate restTemplate, Environment environment) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.restTemplate = restTemplate;
+        this.environment = environment;
     }
 
     @Override
@@ -68,6 +79,14 @@ public class UsersServiceImpl implements UsersService{
         if(userEntity == null) throw new UsernameNotFoundException("User not found");
 
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
+
+        // get albums-service from eureka discovery service
+        String albumsUrl = String.format(environment.getProperty("albums.url"), userId);
+
+        // get albums for userId from albums service
+        ResponseEntity<List<AlbumResponseModel>> albumsListResponse = restTemplate.exchange(albumsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponseModel>>() {});
+        List<AlbumResponseModel> albumsList = albumsListResponse.getBody();
+        userDto.setAlbums(albumsList);
 
         return userDto;
     }
