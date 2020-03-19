@@ -42,9 +42,10 @@ public class AlbumsController {
             return returnValue;
         }
 
+        // map List<AlbumEntity> to List<AlbumResponseModel>
         Type listType = new TypeToken<List<AlbumResponseModel>>(){}.getType();
-
         returnValue = new ModelMapper().map(albumsEntities, listType);
+
         logger.info("Returning " + returnValue.size() + " albums");
 
         return returnValue;

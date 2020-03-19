@@ -1,6 +1,7 @@
 package com.weilyu.photoapp.photoappusersservice.service;
 
 
+import com.weilyu.photoapp.photoappusersservice.data.AlbumsServiceClient;
 import com.weilyu.photoapp.photoappusersservice.data.UserEntity;
 import com.weilyu.photoapp.photoappusersservice.data.UserRepository;
 import com.weilyu.photoapp.photoappusersservice.shared.UserDto;
@@ -27,13 +28,14 @@ public class UsersServiceImpl implements UsersService{
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;   // to get encoder injected into UsersServiceImpl, need to create a bean of this encoder
-    private final RestTemplate restTemplate;
+    //private final RestTemplate restTemplate;
     private final Environment environment;
+    private final AlbumsServiceClient albumsServiceClient;
 
-    public UsersServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, RestTemplate restTemplate, Environment environment) {
+    public UsersServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, Environment environment, AlbumsServiceClient albumsServiceClient) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.restTemplate = restTemplate;
+        this.albumsServiceClient = albumsServiceClient;
         this.environment = environment;
     }
 
@@ -80,12 +82,21 @@ public class UsersServiceImpl implements UsersService{
 
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
+        /*
+        //use RestTemplate:
+
         // get albums-service from eureka discovery service
         String albumsUrl = String.format(environment.getProperty("albums.url"), userId);
 
         // get albums for userId from albums service
         ResponseEntity<List<AlbumResponseModel>> albumsListResponse = restTemplate.exchange(albumsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponseModel>>() {});
         List<AlbumResponseModel> albumsList = albumsListResponse.getBody();
+
+        */
+
+        //use Feign Client:
+        List<AlbumResponseModel> albumsList = albumsServiceClient.getAlbums(userId);
+
         userDto.setAlbums(albumsList);
 
         return userDto;
