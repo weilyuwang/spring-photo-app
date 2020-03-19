@@ -1,5 +1,6 @@
 package com.weilyu.photoapp.photoappusersservice;
 
+import feign.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -27,5 +28,11 @@ public class PhotoappUsersServiceApplication {
     @LoadBalanced //enable client-side load balancing
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
+    }
+
+    //Feign Logger Level Bean
+    @Bean
+    Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
     }
 }
