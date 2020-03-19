@@ -38,8 +38,8 @@ public class PhotoappUsersServiceApplication {
     }
 
     //Feign Error Decoder Bean
-    @Bean
-    public FeignErrorDecoder getFeignErrorDecoder() {
-        return new FeignErrorDecoder();
-    }
+//    @Bean
+//    public FeignErrorDecoder getFeignErrorDecoder() {
+//        return new FeignErrorDecoder(environment);
+//    }
 }
