@@ -5,6 +5,7 @@ import com.weilyu.photoapp.photoappusersservice.service.UsersService;
 import com.weilyu.photoapp.photoappusersservice.shared.UserDto;
 import com.weilyu.photoapp.photoappusersservice.ui.model.CreateUserRequestModel;
 import com.weilyu.photoapp.photoappusersservice.ui.model.CreateUserResponseModel;
+import com.weilyu.photoapp.photoappusersservice.ui.model.UserResponseModel;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
@@ -47,6 +48,15 @@ public class UsersController {
         CreateUserResponseModel responseModel = modelMapper.map(createdUserDto, CreateUserResponseModel.class);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseModel);
+    }
+
+    @GetMapping(value = "/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+    public ResponseEntity<UserResponseModel> getUser(@PathVariable String userId) {
+
+        UserDto userDto = usersService.getUserByUserId(userId);
+        UserResponseModel returnValue = new ModelMapper().map(userDto, UserResponseModel.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
 }
