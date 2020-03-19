@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @FeignClient(name = "albums-service")
-public interface AlbumsServiceClient {
+public interface AlbumsServiceFeignClient {
 
     @GetMapping("/users/{id}/albums")
     List<AlbumResponseModel> getAlbums(@PathVariable String id);

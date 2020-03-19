@@ -1,23 +1,22 @@
 package com.weilyu.photoapp.photoappusersservice.service;
 
 
-import com.weilyu.photoapp.photoappusersservice.data.AlbumsServiceClient;
+import com.weilyu.photoapp.photoappusersservice.data.AlbumsServiceFeignClient;
 import com.weilyu.photoapp.photoappusersservice.data.UserEntity;
 import com.weilyu.photoapp.photoappusersservice.data.UserRepository;
 import com.weilyu.photoapp.photoappusersservice.shared.UserDto;
 import com.weilyu.photoapp.photoappusersservice.ui.model.AlbumResponseModel;
+import feign.FeignException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.core.ParameterizedTypeReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +29,11 @@ public class UsersServiceImpl implements UsersService{
     private final BCryptPasswordEncoder passwordEncoder;   // to get encoder injected into UsersServiceImpl, need to create a bean of this encoder
     //private final RestTemplate restTemplate;
     private final Environment environment;
-    private final AlbumsServiceClient albumsServiceClient;
+    private final AlbumsServiceFeignClient albumsServiceClient;
 
-    public UsersServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, Environment environment, AlbumsServiceClient albumsServiceClient) {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public UsersServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, Environment environment, AlbumsServiceFeignClient albumsServiceClient) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.albumsServiceClient = albumsServiceClient;
@@ -94,8 +95,15 @@ public class UsersServiceImpl implements UsersService{
 
         */
 
-        //use Feign Client:
-        List<AlbumResponseModel> albumsList = albumsServiceClient.getAlbums(userId);
+        //use Feign Client to send HTTP get request to albums-service to get user's albums data:
+        List<AlbumResponseModel> albumsList = null;
+
+        try {
+            albumsList = albumsServiceClient.getAlbums(userId);
+        } catch (FeignException e) {
+            // handle Feign Exception
+            logger.error(e.getLocalizedMessage());
+        }
 
         userDto.setAlbums(albumsList);
 
