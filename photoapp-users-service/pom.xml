@@ -42,7 +42,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <!-- MySQL Connector -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -88,6 +88,13 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
+
+        <!-- Feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
