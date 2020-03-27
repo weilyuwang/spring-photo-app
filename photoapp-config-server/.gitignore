@@ -4,8 +4,10 @@ target/
 !**/src/main/**
 !**/src/test/**
 
-### Secret (application.properties) ###
-#/src/main/resources/application.properties
+
+# encryption-related folders/files
+apiEncryptionKey.jks
+UnlimitedJCEPolicyJDK8/
 
 
 ### STS ###
