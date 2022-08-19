@@ -1,4 +1,4 @@
-# RESTful Microservices built with Spring Boot & Spring Cloud
+# Photo App
 
 
 ### RESTful APIs with a Microservices architecture built with Spring Boot &amp; Spring Cloud.
