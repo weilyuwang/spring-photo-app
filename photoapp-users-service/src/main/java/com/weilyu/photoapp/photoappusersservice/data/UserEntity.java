@@ -24,9 +24,6 @@ public class UserEntity {
     @Column(nullable = false, length = 50)
     private String lastName;
 
-    // We don't want to store plain text password in our database, only encrypted password should be stored
-//    private String password;
-
     @Column(nullable = false, length = 120, unique = true)
     private String email;
 

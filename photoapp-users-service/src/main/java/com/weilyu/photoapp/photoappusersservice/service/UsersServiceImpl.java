@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,18 +25,19 @@ import java.util.UUID;
 public class UsersServiceImpl implements UsersService{
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;   // to get encoder injected into UsersServiceImpl, need to create a bean of this encoder
-    //private final RestTemplate restTemplate;
-    private final Environment environment;
+
+    // to get encoder injected into UsersServiceImpl, need to create a bean of this encoder
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    // Feign client for making HTTP requests
     private final AlbumsServiceFeignClient albumsServiceClient;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public UsersServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, Environment environment, AlbumsServiceFeignClient albumsServiceClient) {
+    public UsersServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, AlbumsServiceFeignClient albumsServiceClient) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.albumsServiceClient = albumsServiceClient;
-        this.environment = environment;
     }
 
     @Override
@@ -83,21 +83,7 @@ public class UsersServiceImpl implements UsersService{
 
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
-        /*
-        //use RestTemplate:
-
-        // get albums-service from eureka discovery service
-        String albumsUrl = String.format(environment.getProperty("albums.url"), userId);
-
-        // get albums for userId from albums service
-        ResponseEntity<List<AlbumResponseModel>> albumsListResponse = restTemplate.exchange(albumsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponseModel>>() {});
-        List<AlbumResponseModel> albumsList = albumsListResponse.getBody();
-
-        */
-
-
-        /*
-        //use Feign Client to send HTTP get request to albums-service to get user's albums data:
+        // use Feign Client to send HTTP get request to albums-service to get user's albums data:
         List<AlbumResponseModel> albumsList = null;
 
         try {
@@ -106,13 +92,6 @@ public class UsersServiceImpl implements UsersService{
             // handle Feign Exception
             logger.error(e.getLocalizedMessage());
         }
-
-         */
-
-        // get rid of try-catch block and use FeignErrorDecoder instead
-        logger.info("Before calling Albums Microservice");
-        List<AlbumResponseModel> albumsList = albumsServiceClient.getAlbums(userId);
-        logger.info("After calling Albums Microservice");
 
         userDto.setAlbums(albumsList);
 
