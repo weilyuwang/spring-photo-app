@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class PhotoappAccountManagementApplication {
+public class PhotoAppAccountManagementApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PhotoappAccountManagementApplication.class, args);
+        SpringApplication.run(PhotoAppAccountManagementApplication.class, args);
     }
 
 }

@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.weilyu.photoapp</groupId>
-    <artifactId>photoapp-discovery-server</artifactId>
+    <artifactId>photo-app-discovery-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>photoapp-discovery-server</name>
+    <name>photo-app-discovery-server</name>
     <description>Photo App Eureka Discovery Server</description>
 
     <properties>
