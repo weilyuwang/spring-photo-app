@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weilyu.photoapp.photoappusersservice.service.UsersService;
 import com.weilyu.photoapp.photoappusersservice.shared.UserDto;
 import com.weilyu.photoapp.photoappusersservice.ui.model.LoginRequestModel;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.core.env.Environment;
