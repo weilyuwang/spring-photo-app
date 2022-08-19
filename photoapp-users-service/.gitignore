@@ -29,3 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### users service specific log file ###
+users-service.log
