@@ -7,7 +7,7 @@
 
 - Properly handled user authentication & authorization and secured microservices behind API Gateway with Spring Security and JWT.     
 
-- Registered RESTful services using Eureka Discovery Service and enabled loading balancing and service routing with Spring Cloud API Gateway.    
+- Registered RESTful services using Eureka Discovery Service and enabled loading balancing and service routing with Spring Cloud Gateway.    
 
 - Implemented a Git based, centralized configuration store for all microservices with Spring Cloud Config Server and dynamically broadcasted configuration changes with Spring Cloud Bus, using RabbitMQ as the message broker.         
 
