@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.weilyu.photoapp</groupId>
-    <artifactId>photoapp-api-gateway</artifactId>
+    <artifactId>photo-app-api-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>photo-app-api-gateway</name>
     <description>photo-app-api-gateway</description>
