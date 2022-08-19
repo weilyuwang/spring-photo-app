@@ -18,3 +18,5 @@
 - Traced HTTP requests with Spring Cloud Sleuth and Zipkin, aggregated and centralized application log files with ELK stack.        
 
 - Deployed Microservices in Docker containers on multiple EC2 Linux machines in AWS.        
+
+#### The private config repo: https://github.com/weilyuwang/photo-app-configuration
