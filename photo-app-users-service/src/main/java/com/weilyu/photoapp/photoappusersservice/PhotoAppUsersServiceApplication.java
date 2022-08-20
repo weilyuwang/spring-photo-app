@@ -13,10 +13,10 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class PhotoappUsersServiceApplication {
+public class PhotoAppUsersServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PhotoappUsersServiceApplication.class, args);
+        SpringApplication.run(PhotoAppUsersServiceApplication.class, args);
     }
 
     @Bean

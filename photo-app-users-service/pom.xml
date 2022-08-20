@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.weilyu.photoapp</groupId>
-    <artifactId>photoapp-users-service</artifactId>
+    <artifactId>photo-app-users-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>photoapp-users-service</name>
-    <description>Photo App User Microservice</description>
+    <name>photo-app-users-service</name>
+    <description>Photo App Users Service</description>
 
     <properties>
         <java.version>17</java.version>
